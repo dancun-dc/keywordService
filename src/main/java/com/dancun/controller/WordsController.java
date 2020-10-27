@@ -25,7 +25,9 @@ import java.util.List;
  *
  * @author dancun
  * @since 2020-10-24
+ * 返回值有状态吗,安卓端有加载动画,期间获取json数据
  */
+
 @Slf4j
 @RestController
 @RequestMapping("/words")
@@ -35,7 +37,7 @@ public class WordsController {
 
     @Autowired
     IWordsService wordsService;
-
+    //安卓端获取关键字api
     @RequestMapping(value = "/list.json")
     public List<Words> list(String lan) {
         List<Words> list = null;
@@ -46,7 +48,7 @@ public class WordsController {
         }
         return list;
     }
-
+    //不推荐使用这方法
     @RequestMapping(value = "/delete")
     public String del(Integer id) {
         int i = 0;
@@ -60,7 +62,7 @@ public class WordsController {
         }
         return "{\"state\":" + i + ",\"message\":" + message + "}";
     }
-
+    //添加单个关键字
     @RequestMapping(value = "/save")
     public String save(Words words) {
         int i = 0;
@@ -75,7 +77,7 @@ public class WordsController {
         return "{\"state\":" + i + ",\"message\":" + message + "}";
     }
 
-    @RequestMapping(value = "/test")
+    @RequestMapping(value = "/test")//预留接口更新关键字数据,只要修改文件上传,推荐写好json后批量更新
     public String test(String lan) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
@@ -90,7 +92,7 @@ public class WordsController {
         int l = 0;
         String mes = "";
         Iterator<String> keys = jsonObject.keys();
-        while (keys.hasNext()) {
+        while (keys.hasNext()) {//使用迭代器读取json数据并报错
             String teams = keys.next();
             JSONArray jsonArray = jsonObject.getJSONArray(teams);
             for (int i = 0; i < jsonArray.size(); i++) {
